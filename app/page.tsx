@@ -1,5 +1,6 @@
 ﻿"use client";
 import { useState } from "react";
+import { ESG_LIMITS, type EsgField } from "@/lib/esg-limits";
 
 interface ESGReport {
   overallScore: number;
@@ -81,7 +82,7 @@ export default function ESGAssistant() {
     }
   };
 
-  const inputs = [
+  const inputs: { key: EsgField; label: string; placeholder: string; required?: boolean }[] = [
     { key: "companyName", label: "Company Name *", placeholder: "Acme Corp", required: true },
     { key: "industry", label: "Industry *", placeholder: "Manufacturing, Tech, Retail...", required: true },
     { key: "employees", label: "Number of Employees", placeholder: "500" },
@@ -107,10 +108,11 @@ export default function ESGAssistant() {
                 <label className="block text-sm font-semibold text-gray-700 mb-1">{label}</label>
                 <input
                   type="text"
-                  value={form[key as keyof typeof form]}
+                  value={form[key]}
                   onChange={(e) => setForm({ ...form, [key]: e.target.value })}
                   placeholder={placeholder}
                   required={required}
+                  maxLength={ESG_LIMITS[key]}
                   className="w-full border border-gray-300 rounded-xl p-3 text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                 />
               </div>
